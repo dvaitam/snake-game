@@ -39,11 +39,13 @@ function update() {
 
   snake.unshift(head);
 
+
   if (head.x === food.x && head.y === food.y) {
     placeFood();
   } else {
     snake.pop();
   }
+
 }
 
 function draw() {
@@ -73,6 +75,7 @@ function endGame(message = 'Game Over') {
   gameOver = true;
   const over = document.getElementById('game-over');
   over.querySelector('p').textContent = message;
+
   over.classList.remove('hidden');
   setTimeout(() => over.classList.add('show'), 10);
 }
@@ -91,6 +94,7 @@ document.getElementById('restart').addEventListener('click', () => {
   gameOver = false;
   const over = document.getElementById('game-over');
   over.querySelector('p').textContent = 'Game Over';
+
   over.classList.remove('show');
   setTimeout(() => over.classList.add('hidden'), 600);
   requestAnimationFrame(gameLoop);
