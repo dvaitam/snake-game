@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin-top: 30px;
+}
+canvas {
+  background: #000;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #444;
+}
+#game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#game-over.show {
+  opacity: 1;
+}
+.hidden {
+  display: none;
+}
