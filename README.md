@@ -12,3 +12,7 @@ python3 server.py
 
 Once the server is running navigate to [http://localhost:5000](http://localhost:5000).
 
+Use the arrow keys to move the snake. When it reaches an edge it reappears on
+the opposite side. The game ends only if the snake collides with itself or
+grows to fill the entire grid.
+

@@ -23,20 +23,29 @@ function gameLoop(time) {
 }
 
 function update() {
-  const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+  if (direction.x === 0 && direction.y === 0) return;
+  const head = {
+    x: snake[0].x + direction.x,
+    y: snake[0].y + direction.y
+  };
+
+  head.x = (head.x + tileCount) % tileCount;
+  head.y = (head.y + tileCount) % tileCount;
+
+  if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    endGame();
+    return;
+  }
+
   snake.unshift(head);
+
+
   if (head.x === food.x && head.y === food.y) {
     placeFood();
   } else {
     snake.pop();
   }
-  if (
-    head.x < 0 || head.x >= tileCount ||
-    head.y < 0 || head.y >= tileCount ||
-    snake.slice(1).some(s => s.x === head.x && s.y === head.y)
-  ) {
-    endGame();
-  }
+
 }
 
 function draw() {
@@ -52,13 +61,21 @@ function draw() {
 }
 
 function placeFood() {
-  food.x = Math.floor(Math.random() * tileCount);
-  food.y = Math.floor(Math.random() * tileCount);
+  if (snake.length === tileCount * tileCount) {
+    endGame('You win!');
+    return;
+  }
+  do {
+    food.x = Math.floor(Math.random() * tileCount);
+    food.y = Math.floor(Math.random() * tileCount);
+  } while (snake.some(s => s.x === food.x && s.y === food.y));
 }
 
-function endGame() {
+function endGame(message = 'Game Over') {
   gameOver = true;
   const over = document.getElementById('game-over');
+  over.querySelector('p').textContent = message;
+
   over.classList.remove('hidden');
   setTimeout(() => over.classList.add('show'), 10);
 }
@@ -76,6 +93,8 @@ document.getElementById('restart').addEventListener('click', () => {
   placeFood();
   gameOver = false;
   const over = document.getElementById('game-over');
+  over.querySelector('p').textContent = 'Game Over';
+
   over.classList.remove('show');
   setTimeout(() => over.classList.add('hidden'), 600);
   requestAnimationFrame(gameLoop);
