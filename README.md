@@ -11,3 +11,4 @@ python3 server.py
 ```
 
 Once the server is running navigate to [http://localhost:5000](http://localhost:5000).
+
