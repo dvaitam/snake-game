@@ -11,6 +11,10 @@ let lastTime = 0;
 let foodHue = 0;
 let score = 0;
 
+// Fruits
+const fruits = ['🍎','🍌','🍇','🍊','🍓','🍒','🍍','🥝','🍉','🍋','🍑','🍐','🥭'];
+let currentFruit = fruits[Math.floor(Math.random()*fruits.length)];
+
 // DOM elements
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -106,13 +110,15 @@ function draw() {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw food with glow effect
-  ctx.shadowColor = `hsl(${foodHue}, 100%, 50%)`;
+  // Draw fruit with glow effect
+  ctx.save();
+  ctx.shadowColor = '#ffffffaa';
   ctx.shadowBlur = 15;
-  ctx.fillStyle = `hsl(${foodHue}, 100%, 50%)`;
-  ctx.fillRect(food.x * size, food.y * size, size, size);
-  ctx.shadowBlur = 0;
-  foodHue = (foodHue + 4) % 360;
+  ctx.font = `${Math.floor(size * 0.9)}px Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(currentFruit, food.x * size + size / 2, food.y * size + size / 2);
+  ctx.restore();
 
   // Draw snake with gradient
   const snakeGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -141,6 +147,7 @@ function placeFood() {
     food.x = Math.floor(Math.random() * tileCount);
     food.y = Math.floor(Math.random() * tileCount);
   } while (snake.some(s => s.x === food.x && s.y === food.y));
+  currentFruit = fruits[Math.floor(Math.random() * fruits.length)];
 }
 
 function endGame(message = 'Game Over') {
