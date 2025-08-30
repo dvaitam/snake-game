@@ -4,11 +4,10 @@ const size = 20;
 const tileCount = canvas.width / size;
 let snake = [{x: 10, y: 10}];
 let direction = {x: 0, y: 0};
-let food = {x: 15, y: 15};
+let food = {x: 15, y: 15, hue: 0};
 let speed = 8;
 let gameOver = false;
 let lastTime = 0;
-let foodHue = 0;
 let score = 0;
 
 // DOM elements
@@ -107,12 +106,11 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw food with glow effect
-  ctx.shadowColor = `hsl(${foodHue}, 100%, 50%)`;
+  ctx.shadowColor = `hsl(${food.hue}, 100%, 50%)`;
   ctx.shadowBlur = 15;
-  ctx.fillStyle = `hsl(${foodHue}, 100%, 50%)`;
+  ctx.fillStyle = `hsl(${food.hue}, 100%, 50%)`;
   ctx.fillRect(food.x * size, food.y * size, size, size);
   ctx.shadowBlur = 0;
-  foodHue = (foodHue + 4) % 360;
 
   // Draw snake with gradient
   const snakeGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -141,6 +139,7 @@ function placeFood() {
     food.x = Math.floor(Math.random() * tileCount);
     food.y = Math.floor(Math.random() * tileCount);
   } while (snake.some(s => s.x === food.x && s.y === food.y));
+  food.hue = Math.floor(Math.random() * 360);
 }
 
 function endGame(message = 'Game Over') {
