@@ -2,13 +2,13 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const size = 20;
 const tileCount = canvas.width / size;
+const fruits = ['🍎', '🍊', '🍋', '🍉', '🍇', '🍓', '🍒', '🍑', '🍍', '🥝'];
 let snake = [{x: 10, y: 10}];
 let direction = {x: 0, y: 0};
-let food = {x: 15, y: 15};
+let food = {x: 15, y: 15, emoji: '🍎'};
 let speed = 8;
 let gameOver = false;
 let lastTime = 0;
-let foodHue = 0;
 let score = 0;
 
 // DOM elements
@@ -106,13 +106,11 @@ function draw() {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw food with glow effect
-  ctx.shadowColor = `hsl(${foodHue}, 100%, 50%)`;
-  ctx.shadowBlur = 15;
-  ctx.fillStyle = `hsl(${foodHue}, 100%, 50%)`;
-  ctx.fillRect(food.x * size, food.y * size, size, size);
-  ctx.shadowBlur = 0;
-  foodHue = (foodHue + 4) % 360;
+  // Draw food
+  ctx.font = `${size}px Arial`;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.fillText(food.emoji, food.x * size + size / 2, food.y * size + size / 2);
 
   // Draw snake with gradient
   const snakeGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -137,6 +135,7 @@ function placeFood() {
     endGame('You Win! 🎉');
     return;
   }
+  food.emoji = fruits[Math.floor(Math.random() * fruits.length)];
   do {
     food.x = Math.floor(Math.random() * tileCount);
     food.y = Math.floor(Math.random() * tileCount);
