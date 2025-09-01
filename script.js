@@ -4,12 +4,13 @@ const size = 20;
 const tileCount = canvas.width / size;
 let snake = [{x: 10, y: 10}];
 let direction = {x: 0, y: 0};
-let food = {x: 15, y: 15};
+let food = {x: 15, y: 15, emoji: fruits[0]};
 let speed = 8;
 let gameOver = false;
 let lastTime = 0;
 let foodHue = 0;
 let score = 0;
+const fruits = ['🍎', '🍌', '🍒', '🍇', '🍊'];
 
 // DOM elements
 const startScreen = document.getElementById('start-screen');
@@ -106,11 +107,13 @@ function draw() {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw food with glow effect
+  // Draw fruit emoji
+  ctx.font = '16px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
   ctx.shadowColor = `hsl(${foodHue}, 100%, 50%)`;
   ctx.shadowBlur = 15;
-  ctx.fillStyle = `hsl(${foodHue}, 100%, 50%)`;
-  ctx.fillRect(food.x * size, food.y * size, size, size);
+  ctx.fillText(food.emoji, food.x * size + size/2, food.y * size + size/2);
   ctx.shadowBlur = 0;
   foodHue = (foodHue + 4) % 360;
 
@@ -140,6 +143,7 @@ function placeFood() {
   do {
     food.x = Math.floor(Math.random() * tileCount);
     food.y = Math.floor(Math.random() * tileCount);
+    food.emoji = fruits[Math.floor(Math.random() * fruits.length)];
   } while (snake.some(s => s.x === food.x && s.y === food.y));
 }
 
